@@ -1,13 +1,17 @@
 using System.Reflection;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using Ordering.Infrastructure.EventStore.Model.OrderEvents;
+using Ordering.Infrastructure.EventStore.Model;
 
 namespace Ordering.Infrastructure.EventStore;
 
 public class EventStoreDbContext : DbContext
 {
     public DbSet<OrderEvent> OrderEvents { get; private set; }
+
+    public EventStoreDbContext(DbContextOptions options) : base(options)
+    {
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

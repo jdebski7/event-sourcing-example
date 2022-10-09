@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Ordering.Domain.Model.Orders;
 using Ordering.Domain.Repositories;
-using Ordering.Infrastructure.EventStore.Model.OrderEvents;
+using Ordering.Infrastructure.EventStore.Model;
 using OrderEvent = Ordering.Domain.Model.Orders.OrderEvent;
 
 namespace Ordering.Infrastructure.EventStore.Repositories;
@@ -17,7 +17,7 @@ public class OrderRepository : IOrderRepository
 
     public async Task AppendAsync(OrderEvent orderEvent, CancellationToken cancellationToken)
     {
-        await _eventStoreDbContext.OrderEvents.AddAsync(new Model.OrderEvents.OrderEvent(
+        await _eventStoreDbContext.OrderEvents.AddAsync(new Model.OrderEvent(
             correlationId: orderEvent.OrderId,
             version: orderEvent.OrderVersion,
             data: Map(orderEvent),
@@ -37,7 +37,7 @@ public class OrderRepository : IOrderRepository
             return null;
         }
 
-        return Order.ApplyEvents(id, orderEvents.Select<Model.OrderEvents.OrderEvent, OrderEvent>(e =>
+        return Order.ApplyEvents(id, orderEvents.Select<Model.OrderEvent, OrderEvent>(e =>
         {
             return e.Data switch
             {

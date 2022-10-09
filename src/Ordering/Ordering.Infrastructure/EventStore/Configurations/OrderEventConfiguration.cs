@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Ordering.Infrastructure.EventStore.Model.OrderEvents;
+using Ordering.Infrastructure.EventStore.Model;
 
 namespace Ordering.Infrastructure.EventStore.Configurations;
 

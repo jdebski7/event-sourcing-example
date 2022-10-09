@@ -28,7 +28,7 @@ internal class InfrastructureOptions : IInfrastructureOptions
         {
             options.UseNpgsql(postgresConnectionString);
         });
-        
+
         AddRepositories();
             
         _services.AddMassTransit(c =>

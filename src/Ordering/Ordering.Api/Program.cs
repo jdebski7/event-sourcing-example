@@ -9,7 +9,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfrastructure(b =>
 {
-    b.AddEventStore("connection-string");
+    b.AddEventStore("Host=localhost;Database=event-sourcing-example-write;");
 });
 
 var app = builder.Build();
