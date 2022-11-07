@@ -5,15 +5,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-
+    
     <ItemGroup>
-      <PackageReference Include="MassTransit" Version="8.0.7" />
-      <PackageReference Include="MassTransit.EntityFrameworkCore" Version="8.0.7" />
-      <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.7" />
-      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.7" />
+        <PackageReference Include="MongoDB.Driver" Version="2.18.0" />
     </ItemGroup>
-
+    
     <ItemGroup>
+      <ProjectReference Include="..\Ordering.Application\Ordering.Application.csproj" />
       <ProjectReference Include="..\Ordering.Domain\Ordering.Domain.csproj" />
     </ItemGroup>
 

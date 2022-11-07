@@ -1,4 +1,4 @@
-namespace Ordering.Application.ViewModels;
+namespace Ordering.Contract.ViewModels;
 
 public class OrderViewModel
 {

@@ -1,7 +1,13 @@
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace Ordering.Infrastructure.EventStore.Model;
 
 public abstract class Event<TData> where TData : class
 {
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string? Id { get; set; }
     public Guid CorrelationId { get; private init; }
     public ulong Version { get; private init; }
     public TData Data { get; private init; }

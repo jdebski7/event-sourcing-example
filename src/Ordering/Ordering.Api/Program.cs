@@ -1,30 +1,23 @@
+using System.Reflection;
+using MassTransit;
 using Ordering.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddMassTransit(config =>
+{
+    config.AddConsumers(Assembly.Load("Ordering.Application"));
+    config.UsingRabbitMq((c, cfg) =>
+    {
+        cfg.ConfigureEndpoints(c);
+    });
+});
 
 builder.Services.AddInfrastructure(b =>
 {
-    b.AddEventStore("Host=localhost;Database=event-sourcing-example-write;");
+    b.AddEventStore("mongodb://localhost:27017");
 });
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
 
 app.Run();

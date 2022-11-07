@@ -2,9 +2,9 @@ namespace Ordering.Infrastructure.EventStore.Model;
 
 public abstract record OrderEventData;
 
-public record OrderPlacedEventData : OrderEventData;
-public record OrderCancelledEventData : OrderEventData;
-public record OrderShippedEventData : OrderEventData;
+public record OrderPlacedEventData(DateTime PlacedAt) : OrderEventData;
+public record OrderCancelledEventData(DateTime CancelledAt) : OrderEventData;
+public record OrderShippedEventData(DateTime ShippedAt, string Destination) : OrderEventData;
 
 public class OrderEvent : Event<OrderEventData>
 {

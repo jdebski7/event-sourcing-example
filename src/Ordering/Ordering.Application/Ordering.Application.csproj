@@ -7,8 +7,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Ordering.Contract\Ordering.Contract.csproj" />
-      <ProjectReference Include="..\Ordering.Domain\Ordering.Domain.csproj" />
+        <PackageReference Include="MassTransit.Abstractions" Version="8.0.8" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="..\Ordering.Contract\Ordering.Contract.csproj" />
+        <ProjectReference Include="..\Ordering.Domain\Ordering.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Consumers\EventConsumers" />
     </ItemGroup>
 
 </Project>
