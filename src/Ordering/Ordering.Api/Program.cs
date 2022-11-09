@@ -10,6 +10,7 @@ builder.Services.AddMassTransit(config =>
     config.UsingRabbitMq((c, cfg) =>
     {
         cfg.ConfigureEndpoints(c);
+        cfg.UseInMemoryOutbox();
     });
 });
 

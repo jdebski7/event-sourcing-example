@@ -6,7 +6,7 @@ public abstract record OrderEvent(Guid OrderId, ulong OrderVersion);
 
 public record OrderPlaced(Guid OrderId, ulong OrderVersion, DateTime PlacedAt) : OrderEvent(OrderId, OrderVersion);
 public record OrderCancelled(Guid OrderId, ulong OrderVersion, DateTime CancelledAt) : OrderEvent(OrderId, OrderVersion);
-public record OrderShipped(Guid OrderId, ulong OrderVersion, DateTime ShippedAt, string Destination) : OrderEvent(OrderId, OrderVersion);
+public record OrderShipped(Guid OrderId, ulong OrderVersion, DateTime ShippedAt, string ShippingDestination) : OrderEvent(OrderId, OrderVersion);
 
 internal static class OrderEventExtension
 {

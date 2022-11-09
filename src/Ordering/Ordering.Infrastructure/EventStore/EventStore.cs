@@ -5,15 +5,17 @@ namespace Ordering.Infrastructure.EventStore;
 
 public class EventStore
 {
-    private readonly IMongoClient _mongoClient;
-    private readonly IMongoDatabase _mongoDatabase;
-    
     public IMongoCollection<OrderEvent> OrderEventCollection { get; }
 
     public EventStore(string connectionString)
     {
-        _mongoClient = new MongoClient(connectionString);
-        _mongoDatabase = _mongoClient.GetDatabase("OrderingEventsDB");
-        OrderEventCollection = _mongoDatabase.GetCollection<OrderEvent>("OrderEvents");
+        var mongoClient = new MongoClient(connectionString);
+        var mongoDatabase = mongoClient.GetDatabase("OrderingEventsDB");
+        
+        OrderEventCollection = mongoDatabase.GetCollection<OrderEvent>("OrderEvents");
+
+        // TODO: Move somewhere else
+        var indexKeysDefinition = Builders<OrderEvent>.IndexKeys.Combine("Version", "CorrelationId");
+        OrderEventCollection.Indexes.CreateOne(new CreateIndexModel<OrderEvent>(indexKeysDefinition));
     }
 }

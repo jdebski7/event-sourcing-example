@@ -55,7 +55,7 @@ public class OrderRepository : IOrderRepository
         {
             OrderPlaced ev => new OrderPlacedEventData(ev.PlacedAt),
             OrderCancelled ev => new OrderCancelledEventData(ev.CancelledAt),
-            OrderShipped ev => new OrderShippedEventData(ev.ShippedAt, ev.Destination),
+            OrderShipped ev => new OrderShippedEventData(ev.ShippedAt, ev.ShippingDestination),
             _ => throw new ArgumentOutOfRangeException(nameof(orderEvent))
         };
     }

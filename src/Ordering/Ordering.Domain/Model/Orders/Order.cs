@@ -52,7 +52,7 @@ public class Order : Entity, IAggregate
         }
 
         Version = orderPlaced.OrderVersion;
-        Status = OrderStatus.Placed;
+        Status = OrderStatus.Placed();
         PlacedAt = orderPlaced.PlacedAt;
     }
 
@@ -63,18 +63,18 @@ public class Order : Entity, IAggregate
             throw new DomainException("Invalid version");
         }
         
-        if (Status == OrderStatus.Cancelled)
+        if (Status == OrderStatus.Cancelled())
         {
             throw new DomainException("Order already cancelled");
         }
 
-        if (Status == OrderStatus.Shipped)
+        if (Status == OrderStatus.Shipped())
         {
             throw new DomainException("Cannot cancel shipped order");
         }
 
         Version = orderCancelled.OrderVersion;
-        Status = OrderStatus.Cancelled;
+        Status = OrderStatus.Cancelled();
         CancelledAt = orderCancelled.CancelledAt;
     }
 
@@ -85,20 +85,20 @@ public class Order : Entity, IAggregate
             throw new DomainException("Invalid version");
         }
         
-        if (Status == OrderStatus.Shipped)
+        if (Status == OrderStatus.Shipped())
         {
             throw new DomainException("Order already shipped");
         }
 
-        if (Status == OrderStatus.Cancelled)
+        if (Status == OrderStatus.Cancelled())
         {
             throw new DomainException("Cannot ship cancelled order");
         }
         
         Version = orderShipped.OrderVersion;
-        Status = OrderStatus.Shipped;
+        Status = OrderStatus.Shipped();
         ShippedAt = orderShipped.ShippedAt;
-        ShippingDestination = orderShipped.Destination;
+        ShippingDestination = orderShipped.ShippingDestination;
     }
 
     public static Order ApplyEvents(Guid orderId, IList<OrderEvent> orderEvents)
