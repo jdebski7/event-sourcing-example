@@ -1,6 +1,5 @@
-using MassTransit;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Ordering.Application.ReadModel;
 using Ordering.Domain.Repositories;
 using Ordering.Infrastructure.EventStore;
 using Ordering.Infrastructure.EventStore.Repositories;
@@ -22,37 +21,15 @@ internal class InfrastructureOptions : IInfrastructureOptions
         _services = services;
     }
 
-    public void AddEventStore(string postgresConnectionString)
+    public void AddEventStore(string connectionString)
     {
-        _services.AddDbContext<EventStoreDbContext>(options =>
-        {
-            options.UseNpgsql(postgresConnectionString);
-        });
-
+        _services.AddSingleton(_ => new EventStore.EventStore(connectionString));
         AddRepositories();
-            
-        _services.AddMassTransit(c =>
-        {
-            c.AddEntityFrameworkOutbox<EventStoreDbContext>(o =>
-            {
-                o.UsePostgres();
-                o.UseBusOutbox();
-            });
-    
-            c.UsingRabbitMq((_, config) =>
-            {
-                config.Host("localhost", "/", h =>
-                {
-                    h.Username("guest");
-                    h.Password("guest");
-                });
-            });
-        });
     }
 
-    public void AddReadStore(string postgresConnectionString)
+    public void AddReadStore(string connectionString)
     {
-        throw new NotImplementedException();
+        _services.AddSingleton<IReadDatabase>(_ => new ReadDatabase.ReadDatabase(connectionString));
     }
 
     private void AddRepositories()

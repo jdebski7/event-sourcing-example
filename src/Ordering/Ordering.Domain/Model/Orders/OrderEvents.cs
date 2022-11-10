@@ -2,11 +2,11 @@ using Ordering.Domain.Common;
 
 namespace Ordering.Domain.Model.Orders;
 
-public abstract record OrderEvent(Guid OrderId, ulong OrderVersion);
+public abstract record OrderEvent(Guid OrderId, ulong OrderVersion) : IEvent;
 
-public record OrderPlaced(Guid OrderId, ulong OrderVersion) : OrderEvent(OrderId, OrderVersion);
-public record OrderCancelled(Guid OrderId, ulong OrderVersion) : OrderEvent(OrderId, OrderVersion);
-public record OrderShipped(Guid OrderId, ulong OrderVersion) : OrderEvent(OrderId, OrderVersion);
+public record OrderPlaced(Guid OrderId, ulong OrderVersion, DateTime PlacedAt) : OrderEvent(OrderId, OrderVersion);
+public record OrderCancelled(Guid OrderId, ulong OrderVersion, DateTime CancelledAt) : OrderEvent(OrderId, OrderVersion);
+public record OrderShipped(Guid OrderId, ulong OrderVersion, DateTime ShippedAt, string ShippingDestination) : OrderEvent(OrderId, OrderVersion);
 
 internal static class OrderEventExtension
 {
