@@ -15,7 +15,7 @@ public class EventStore
         OrderEventCollection = mongoDatabase.GetCollection<OrderEvent>("OrderEvents");
 
         // TODO: Move somewhere else
-        var indexKeysDefinition = Builders<OrderEvent>.IndexKeys.Combine("Version", "CorrelationId");
-        OrderEventCollection.Indexes.CreateOne(new CreateIndexModel<OrderEvent>(indexKeysDefinition));
+        // var indexKeysDefinition = Builders<OrderEvent>.IndexKeys.Combine("Version", "CorrelationId");
+        // OrderEventCollection.Indexes.CreateOne(new CreateIndexModel<OrderEvent>(indexKeysDefinition));
     }
 }

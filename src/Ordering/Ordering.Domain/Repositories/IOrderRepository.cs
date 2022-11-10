@@ -3,7 +3,6 @@ using Ordering.Domain.Model.Orders;
 
 namespace Ordering.Domain.Repositories;
 
-public interface IOrderRepository : IRepository<Order>
+public interface IOrderRepository : IRepository<Order, OrderEvent>
 {
-    Task AppendAsync(OrderEvent orderEvent, CancellationToken cancellationToken);
 }

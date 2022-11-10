@@ -19,16 +19,16 @@ public class OrderRepository : IOrderRepository
     public async Task AppendAsync(DomainOrderEvent orderEvent, CancellationToken cancellationToken)
     {
         await _eventStore.OrderEventCollection.InsertOneAsync(new OrderEvent(
-            correlationId: orderEvent.OrderId,
+            orderId: orderEvent.OrderId,
             version: orderEvent.OrderVersion,
             data: Map(orderEvent),
-            DateTime.Now), cancellationToken: cancellationToken);
+            createdAt: DateTime.Now), cancellationToken: cancellationToken);
     }
 
     public async Task<Order?> FirstOrDefaultByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var orderEvents = await _eventStore.OrderEventCollection
-            .Find(orderEvent => orderEvent.CorrelationId == id)
+            .Find(orderEvent => orderEvent.OrderId == id)
             .SortBy(orderEvent => orderEvent.Version)
             .ToListAsync(cancellationToken: cancellationToken);
         
@@ -41,9 +41,9 @@ public class OrderRepository : IOrderRepository
         {
             return e.Data switch
             {
-                OrderPlacedEventData data => new OrderPlaced(e.CorrelationId, e.Version, data.PlacedAt),
-                OrderCancelledEventData data => new OrderCancelled(e.CorrelationId, e.Version, data.CancelledAt),
-                OrderShippedEventData data => new OrderShipped(e.CorrelationId, e.Version, data.ShippedAt, data.Destination),
+                OrderPlacedEventData data => new OrderPlaced(e.OrderId, e.Version, data.PlacedAt),
+                OrderCancelledEventData data => new OrderCancelled(e.OrderId, e.Version, data.CancelledAt),
+                OrderShippedEventData data => new OrderShipped(e.OrderId, e.Version, data.ShippedAt, data.Destination),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }).ToList());

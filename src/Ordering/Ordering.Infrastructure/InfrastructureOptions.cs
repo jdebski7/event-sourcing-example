@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Ordering.Application.ReadModel;
 using Ordering.Domain.Repositories;
 using Ordering.Infrastructure.EventStore;
 using Ordering.Infrastructure.EventStore.Repositories;
@@ -28,7 +29,7 @@ internal class InfrastructureOptions : IInfrastructureOptions
 
     public void AddReadStore(string connectionString)
     {
-        throw new NotImplementedException();
+        _services.AddSingleton<IReadDatabase>(_ => new ReadDatabase.ReadDatabase(connectionString));
     }
 
     private void AddRepositories()

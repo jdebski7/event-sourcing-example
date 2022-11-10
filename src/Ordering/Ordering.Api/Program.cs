@@ -17,6 +17,7 @@ builder.Services.AddMassTransit(config =>
 builder.Services.AddInfrastructure(b =>
 {
     b.AddEventStore("mongodb://localhost:27017");
+    b.AddReadStore("mongodb://localhost:27017");
 });
 
 var app = builder.Build();
