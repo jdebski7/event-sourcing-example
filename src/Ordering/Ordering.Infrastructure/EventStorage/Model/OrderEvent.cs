@@ -1,7 +1,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Ordering.Infrastructure.EventStore.Model;
+namespace Ordering.Infrastructure.EventStorage.Model;
 
 public class OrderEvent
 {

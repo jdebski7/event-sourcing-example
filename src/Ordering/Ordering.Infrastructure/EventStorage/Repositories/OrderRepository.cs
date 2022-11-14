@@ -1,24 +1,24 @@
 using MongoDB.Driver;
 using Ordering.Domain.Model.Orders;
 using Ordering.Domain.Repositories;
-using Ordering.Infrastructure.EventStore.Model;
-using OrderEvent = Ordering.Infrastructure.EventStore.Model.OrderEvent;
+using Ordering.Infrastructure.EventStorage.Model;
+using OrderEvent = Ordering.Infrastructure.EventStorage.Model.OrderEvent;
 using DomainOrderEvent = Ordering.Domain.Model.Orders.OrderEvent;
 
-namespace Ordering.Infrastructure.EventStore.Repositories;
+namespace Ordering.Infrastructure.EventStorage.Repositories;
 
 public class OrderRepository : IOrderRepository
 {
-    private readonly EventStore _eventStore;
+    private readonly EventDatabase _eventDatabase;
 
-    public OrderRepository(EventStore eventStore)
+    public OrderRepository(EventDatabase eventDatabase)
     {
-        _eventStore = eventStore;
+        _eventDatabase = eventDatabase;
     }
 
     public async Task AppendAsync(DomainOrderEvent orderEvent, CancellationToken cancellationToken)
     {
-        await _eventStore.OrderEventCollection.InsertOneAsync(new OrderEvent(
+        await _eventDatabase.OrderEventCollection.InsertOneAsync(new OrderEvent(
             orderId: orderEvent.OrderId,
             version: orderEvent.OrderVersion,
             data: Map(orderEvent),
@@ -27,7 +27,7 @@ public class OrderRepository : IOrderRepository
 
     public async Task<Order?> FirstOrDefaultByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var orderEvents = await _eventStore.OrderEventCollection
+        var orderEvents = await _eventDatabase.OrderEventCollection
             .Find(orderEvent => orderEvent.OrderId == id)
             .SortBy(orderEvent => orderEvent.Version)
             .ToListAsync(cancellationToken: cancellationToken);
@@ -49,7 +49,7 @@ public class OrderRepository : IOrderRepository
         }).ToList());
     }
 
-    private OrderEventData Map(Domain.Model.Orders.OrderEvent orderEvent)
+    private static OrderEventData Map(Domain.Model.Orders.OrderEvent orderEvent)
     {
         return orderEvent switch
         {

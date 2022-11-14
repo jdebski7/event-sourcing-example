@@ -5,12 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="MassTransit" Version="8.0.8" />
-        <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.8" />
-    </ItemGroup>
-
+    
     <ItemGroup>
       <ProjectReference Include="..\Ordering.Application\Ordering.Application.csproj" />
       <ProjectReference Include="..\Ordering.Infrastructure\Ordering.Infrastructure.csproj" />
