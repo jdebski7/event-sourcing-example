@@ -5,6 +5,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ordering", "Ordering", "{760708B1-E9E3-467E-978D-0D481A23A46F}"
 	ProjectSection(SolutionItems) = preProject
 		src\Ordering\Makefile = src\Ordering\Makefile
+		src\Ordering\Dockerfile = src\Ordering\Dockerfile
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.Infrastructure", "src\Ordering\Ordering.Infrastructure\Ordering.Infrastructure.csproj", "{D1C8C8BF-04BD-42A2-BABA-6EADFA198205}"
@@ -18,8 +19,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.Contract", "src\Ordering\Ordering.Contract\Ordering.Contract.csproj", "{8C68A0F9-F2BB-4FE9-9A9A-EB59B889C049}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{79E6ECE4-BD60-4BEB-806C-E13D1F16A34E}"
+	ProjectSection(SolutionItems) = preProject
+		src\Gateway\Dockerfile = src\Gateway\Dockerfile
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway.Api", "src\Gateway.Api\Gateway.Api.csproj", "{C1AF6F60-4C12-469A-8D51-7A19DC12260D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway.Api", "src\Gateway\Gateway.Api\Gateway.Api.csproj", "{C1AF6F60-4C12-469A-8D51-7A19DC12260D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

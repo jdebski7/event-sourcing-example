@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Ordering.Infrastructure;
+namespace Ordering.Infrastructure.DependencyInjections;
 
 public static class DependencyInjection
 {
