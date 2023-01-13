@@ -33,6 +33,12 @@ internal class InfrastructureOptions : IInfrastructureOptions
             config.AddConsumers(Assembly.Load("Ordering.Application"));
             config.UsingRabbitMq((c, cfg) =>
             {
+                cfg.Host("rabbitmq", h =>
+                {
+                    h.Username("guest");
+                    h.Password("guest");
+                });
+                
                 cfg.ConfigureEndpoints(c);
                 cfg.UseInMemoryOutbox();
             });
