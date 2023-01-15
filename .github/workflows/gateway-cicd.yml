@@ -36,5 +36,5 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.DEV_CONTAINER_REGISTRY_URL }}/gateway:${{ github.sha }}
-          file: ./Gateway/Dockerfile
+          file: ./src/Gateway/Dockerfile
           context: ./

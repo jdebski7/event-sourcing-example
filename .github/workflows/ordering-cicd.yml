@@ -36,5 +36,5 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.DEV_CONTAINER_REGISTRY_URL }}/ordering:${{ github.sha }}
-          file: ./Ordering/Dockerfile
+          file: ./src/Ordering/Dockerfile
           context: ./
