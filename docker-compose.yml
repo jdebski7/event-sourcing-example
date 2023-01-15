@@ -1,0 +1,68 @@
+
+version: "3.9"
+
+services:
+  gateway-api:
+    build:
+      context: ./
+      dockerfile: ./src/Gateway/Dockerfile
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./config/gateway-api/appsettings.json:/app/appsettings.json
+    ports:
+      - "8080:8080"
+  
+  ordering-api:
+    build:
+      context: ./
+      dockerfile: ./src/Ordering/Dockerfile
+    depends_on:
+      - rabbitmq
+      - mongo
+    volumes:
+      - ./config/ordering-api/appsettings.json:/app/appsettings.json
+  
+  rabbitmq:
+    image: rabbitmq:3-management
+
+  mongo:
+    image: mongo
+    
+  grafana:
+    image: grafana/grafana
+    environment:
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    volumes:
+      - ./config/grafana/ds.yaml:/etc/grafana/provisioning/datasources/ds.yaml
+    ports:
+      - "3000:3000"
+        
+  loki:
+    image: grafana/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    
+  tempo:
+    image: grafana/tempo:latest
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - ./config/tempo/tempo.yaml:/etc/tempo.yaml
+        
+  prometheus:
+    image: prom/prometheus
+    command:
+      - --config.file=/etc/prometheus.yaml
+      - --web.enable-remote-write-receiver
+      - --enable-feature=exemplar-storage
+    volumes:
+      - ./config/prometheus/prometheus.yaml:/etc/prometheus.yaml
+    ports:
+      - "9090:9090"
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib
+    command: [ "--config=/etc/otel-collector-config.yml" ]
+    volumes:
+      - ./config/otel-collector/otel-collector-config.yml:/etc/otel-collector-config.yml

@@ -1,6 +1,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 
 WORKDIR /app
+
+COPY ./src/Ordering/Ordering.Contract ./Ordering/Ordering.Contract
 COPY ./src/Gateway ./Gateway
 
 RUN dotnet restore ./Gateway/Gateway.Api/Gateway.Api.csproj
