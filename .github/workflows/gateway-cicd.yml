@@ -16,6 +16,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        include:
+          - arch: amd64
+          - arch: arm64
 
     steps:
       - name: Checkout to the branch
