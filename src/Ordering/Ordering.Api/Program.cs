@@ -1,4 +1,5 @@
 using System.Reflection;
+using MassTransit;
 using OpenTelemetry;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
@@ -17,9 +18,26 @@ builder.Configuration.Bind("MongoReadDatabase", mongoReadDatabase);
 
 builder.Services.AddInfrastructure(b =>
 {
-    b.AddEventBus();
     b.AddMongoEventDatabase(mongoEventDatabase);
     b.AddMongoReadDatabase(mongoReadDatabase);
+});
+
+builder.Services.AddMassTransit(config =>
+{
+    config.AddConsumers(Assembly.Load("Ordering.Application"));
+    config.UsingRabbitMq((c, cfg) =>
+    {
+        cfg.Host("rabbitmq", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+                
+        cfg.ConfigureEndpoints(c);
+        cfg.UseInMemoryOutbox();
+        
+        cfg.UseInMemoryOutbox();
+    });
 });
 
 builder.Services.AddOpenTelemetry()
@@ -28,6 +46,7 @@ builder.Services.AddOpenTelemetry()
         b.SetResourceBuilder(ResourceBuilder.CreateDefault()
                 .AddService(Assembly.GetExecutingAssembly().GetName().Name!)
                 .AddTelemetrySdk())
+            .AddMeter("MassTransit")
             .AddHttpClientInstrumentation()
             .AddAspNetCoreInstrumentation()
             .AddOtlpExporter(otlpExporterOptions =>
