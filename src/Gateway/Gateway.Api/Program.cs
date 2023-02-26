@@ -21,6 +21,8 @@ builder.Services.AddMassTransit(config =>
             h.Username("guest");
             h.Password("guest");
         });
+        
+        mqConfig.UseInstrumentation();
     });
 });
 
@@ -30,6 +32,7 @@ builder.Services.AddOpenTelemetry()
         b.SetResourceBuilder(ResourceBuilder.CreateDefault()
                 .AddService(Assembly.GetExecutingAssembly().GetName().Name!)
                 .AddTelemetrySdk())
+            .AddMeter("MassTransit")
             .AddHttpClientInstrumentation()
             .AddAspNetCoreInstrumentation()
             .AddOtlpExporter(otlpExporterOptions =>
