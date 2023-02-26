@@ -21,9 +21,9 @@ jobs:
       TIMESTAMP: ${{ steps.set_timestamp.outputs.timestamp }}
     
     steps:
-      - name: Set Unix timestamp
-        id: set_timestamp
-        run: echo "::set-output name=timestamp::$(date +%s)"
+      - name: Get timestamp
+        id: timestamp
+        run: echo "::set-output name=timestamp::$(date +'%s')"
         
       - name: Checkout to the branch
         uses: actions/checkout@v2
@@ -47,6 +47,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ghcr.io/${{ github.repository }}/ordering:${{ github.ref_name }}-${{ github.sha }}-${{ env.TIMESTAMP }}
+          tags: ghcr.io/${{ github.repository }}/ordering:${{ github.ref_name }}-${{ github.sha }}-${{ steps.timestamp.outputs.timestamp }}
           file: ./src/Ordering/Dockerfile
           context: ./
