@@ -5,7 +5,7 @@ on:
   # Automatically trigger it when detected changes in repo
   push:
     branches:
-      [ dev ]
+      [ dev, staging, prod ]
     paths:
       - 'src/Gateway/**'
       - '.github/workflows/gateway-cicd.yml'
