@@ -17,9 +17,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     
-    env:
-      TIMESTAMP: ${{ steps.set_timestamp.outputs.timestamp }}
-    
     steps:
       - name: Get timestamp
         id: timestamp
