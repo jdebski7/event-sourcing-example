@@ -27,10 +27,10 @@ builder.Services.AddMassTransit(config =>
     config.AddConsumers(Assembly.Load("Ordering.Application"));
     config.UsingRabbitMq((c, cfg) =>
     {
-        cfg.Host("rabbitmq", h =>
+        cfg.Host("cluster.rabbitmq.svc.cluster.local", h =>
         {
-            h.Username("guest");
-            h.Password("guest");
+            h.Username("default_user_DiWVUL01FFVg0xtGWhW");
+            h.Password("z2yGSiiN4m2grNWdkM-DZhrNF8aRCKKr");
         });
                 
         cfg.ConfigureEndpoints(c);

@@ -16,10 +16,10 @@ builder.Services.AddMassTransit(config =>
 {
     config.UsingRabbitMq((_, mqConfig) =>
     {
-        mqConfig.Host("rabbitmq", h =>
+        mqConfig.Host("cluster.rabbitmq.svc.cluster.local", h =>
         {
-            h.Username("guest");
-            h.Password("guest");
+            h.Username("default_user_DiWVUL01FFVg0xtGWhW");
+            h.Password("z2yGSiiN4m2grNWdkM-DZhrNF8aRCKKr");
         });
         
         mqConfig.UseInstrumentation();
