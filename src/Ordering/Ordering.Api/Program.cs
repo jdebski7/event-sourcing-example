@@ -5,6 +5,7 @@ using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Ordering.Api;
 using Ordering.Infrastructure.DependencyInjections;
 using Ordering.Infrastructure.DependencyInjections.Settings;
 
@@ -16,6 +17,9 @@ builder.Configuration.Bind("MongoEventDatabase", mongoEventDatabase);
 var mongoReadDatabase = new MongoReadDatabaseSettings();
 builder.Configuration.Bind("MongoReadDatabase", mongoReadDatabase);
 
+var rabbitMqSettings = new RabbitMqSettings();
+builder.Configuration.Bind("RabbitMq", rabbitMqSettings);
+
 builder.Services.AddInfrastructure(b =>
 {
     b.AddMongoEventDatabase(mongoEventDatabase);
@@ -25,18 +29,16 @@ builder.Services.AddInfrastructure(b =>
 builder.Services.AddMassTransit(config =>
 {
     config.AddConsumers(Assembly.Load("Ordering.Application"));
-    config.UsingRabbitMq((c, cfg) =>
+    config.UsingRabbitMq((c, mqConfig) =>
     {
-        cfg.Host("cluster.rabbitmq.svc.cluster.local", h =>
+        mqConfig.Host(rabbitMqSettings.Host, h =>
         {
-            h.Username("default_user_DiWVUL01FFVg0xtGWhW");
-            h.Password("z2yGSiiN4m2grNWdkM-DZhrNF8aRCKKr");
+            h.Username(rabbitMqSettings.Username);
+            h.Password(rabbitMqSettings.Password);
         });
                 
-        cfg.ConfigureEndpoints(c);
-        cfg.UseInMemoryOutbox();
-        
-        cfg.UseInMemoryOutbox();
+        mqConfig.ConfigureEndpoints(c);
+        mqConfig.UseInMemoryOutbox();
     });
 });
 

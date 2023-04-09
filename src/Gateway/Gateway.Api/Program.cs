@@ -1,4 +1,5 @@
 using System.Reflection;
+using Gateway.Api;
 using MassTransit;
 using OpenTelemetry;
 using OpenTelemetry.Logs;
@@ -8,6 +9,9 @@ using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var rabbitMqSettings = new RabbitMqSettings();
+builder.Configuration.Bind("RabbitMq", rabbitMqSettings);
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -16,10 +20,10 @@ builder.Services.AddMassTransit(config =>
 {
     config.UsingRabbitMq((_, mqConfig) =>
     {
-        mqConfig.Host("cluster.rabbitmq.svc.cluster.local", h =>
+        mqConfig.Host(rabbitMqSettings.Host, h =>
         {
-            h.Username("default_user_DiWVUL01FFVg0xtGWhW");
-            h.Password("z2yGSiiN4m2grNWdkM-DZhrNF8aRCKKr");
+            h.Username(rabbitMqSettings.Username);
+            h.Password(rabbitMqSettings.Password);
         });
         
         mqConfig.UseInstrumentation();
